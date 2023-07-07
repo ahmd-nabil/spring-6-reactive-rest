@@ -10,4 +10,5 @@ import reactor.core.publisher.Mono;
 public interface BeerService {
     Flux<BeerDTO>  findAll();
     Mono<BeerDTO> findById(Integer id);
+    Mono<BeerDTO> save(BeerDTO beerDTO);
 }
