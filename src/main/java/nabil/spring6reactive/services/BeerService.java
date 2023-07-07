@@ -11,4 +11,5 @@ public interface BeerService {
     Flux<BeerDTO>  findAll();
     Mono<BeerDTO> findById(Integer id);
     Mono<BeerDTO> save(BeerDTO beerDTO);
+    Mono<BeerDTO> update(Integer id, BeerDTO beerDTO);
 }
