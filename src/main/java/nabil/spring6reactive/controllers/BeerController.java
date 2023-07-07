@@ -5,6 +5,7 @@ import nabil.spring6reactive.model.BeerDTO;
 import nabil.spring6reactive.services.BeerService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,7 +32,7 @@ public class BeerController {
         return beerService.findById(id);
     }
     @PostMapping(path = BEER_ENDPOINT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    Mono<ResponseEntity<Void>> saveBeer(@RequestBody BeerDTO beerDTO) {
+    Mono<ResponseEntity<Void>> saveBeer(@Validated @RequestBody BeerDTO beerDTO) {
         return beerService.save(beerDTO)
                 .map(saved ->
                         ResponseEntity
@@ -44,13 +45,13 @@ public class BeerController {
 
     @PutMapping(path = BEER_ENDPOINT_ID)
     Mono<ResponseEntity<Void>> updateBeer(@PathVariable(name = "beerId") Integer id,
-                                          @RequestBody BeerDTO beerDTO) {
+                                          @Validated @RequestBody BeerDTO beerDTO) {
         return beerService.update(id, beerDTO).map(updatedDto -> ResponseEntity.noContent().build());
     }
 
     @PatchMapping(path = BEER_ENDPOINT_ID)
     Mono<ResponseEntity<Void>> patchBeer(@PathVariable(name = "beerId") Integer id,
-                                         @RequestBody BeerDTO beerDTO) {
+                                         @Validated @RequestBody BeerDTO beerDTO) {
         return beerService.patchBeer(id, beerDTO).map(patchedDTO -> ResponseEntity.noContent().build());
     }
 
