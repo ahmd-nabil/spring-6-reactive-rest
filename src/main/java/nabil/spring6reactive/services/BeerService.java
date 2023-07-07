@@ -12,4 +12,5 @@ public interface BeerService {
     Mono<BeerDTO> findById(Integer id);
     Mono<BeerDTO> save(BeerDTO beerDTO);
     Mono<BeerDTO> update(Integer id, BeerDTO beerDTO);
+    Mono<BeerDTO> patchBeer(Integer id, BeerDTO beerDto);
 }

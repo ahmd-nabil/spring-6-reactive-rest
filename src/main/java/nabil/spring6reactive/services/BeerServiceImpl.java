@@ -5,6 +5,7 @@ import nabil.spring6reactive.mappers.BeerMapper;
 import nabil.spring6reactive.model.BeerDTO;
 import nabil.spring6reactive.repositories.BeerRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,6 +46,31 @@ public class BeerServiceImpl implements BeerService {
                     foundBeer.setPrice(beerDTO.getPrice());
                     foundBeer.setUpc(beerDTO.getUpc());
                     foundBeer.setQuantityOnHand(beerDTO.getQuantityOnHand());
+                    return foundBeer;
+                })
+                .flatMap(beerRepository::save)
+                .map(beerMapper::beerToBeerDTO);
+    }
+
+    @Override
+    public Mono<BeerDTO> patchBeer(Integer id, BeerDTO beerDTO) {
+        return beerRepository.findById(id)
+                .map(foundBeer -> {
+                    if(StringUtils.hasText(beerDTO.getBeerName())) {
+                        foundBeer.setBeerName(beerDTO.getBeerName());
+                    }
+                    if(StringUtils.hasText(beerDTO.getBeerStyle())) {
+                        foundBeer.setBeerStyle(beerDTO.getBeerStyle());
+                    }
+                    if(beerDTO.getPrice() != null) {
+                        foundBeer.setPrice(beerDTO.getPrice());
+                    }
+                    if(beerDTO.getUpc() != null) {
+                        foundBeer.setUpc(beerDTO.getUpc());
+                    }
+                    if(beerDTO.getQuantityOnHand() != null) {
+                        foundBeer.setQuantityOnHand(beerDTO.getQuantityOnHand());
+                    }
                     return foundBeer;
                 })
                 .flatMap(beerRepository::save)
