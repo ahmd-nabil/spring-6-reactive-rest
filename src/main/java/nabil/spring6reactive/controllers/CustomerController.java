@@ -20,8 +20,8 @@ import java.net.URI;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final static String CUSTOMER_ENDPOINT = "/api/v2/customers";
-    private final static String CUSTOMER_ENDPOINT_ID = CUSTOMER_ENDPOINT + "/{customerId}";
+    public static final String CUSTOMER_ENDPOINT = "/api/v2/customers";
+    public static final String CUSTOMER_ENDPOINT_ID = CUSTOMER_ENDPOINT + "/{customerId}";
 
     @GetMapping(CUSTOMER_ENDPOINT)
     Flux<CustomerDTO> findAll() {
