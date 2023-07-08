@@ -23,5 +23,5 @@ public class Customer {
     @CreatedDate
     private LocalDateTime createdDate;
     @LastModifiedDate
-    private LocalDateTime lastModified;
+    private LocalDateTime lastModifiedDate;
 }
