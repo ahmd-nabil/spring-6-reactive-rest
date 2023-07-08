@@ -58,6 +58,8 @@ public class CustomerController {
 
     @DeleteMapping(CUSTOMER_ENDPOINT_ID)
     Mono<ResponseEntity<Void>> deleteById(@PathVariable("customerId") Integer id) {
-        return customerService.deleteById(id).then(Mono.just(ResponseEntity.noContent().build()));
+        return customerService
+                .deleteById(id)
+                .thenReturn(ResponseEntity.noContent().build());
     }
 }

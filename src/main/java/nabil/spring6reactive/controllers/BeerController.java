@@ -57,6 +57,8 @@ public class BeerController {
 
     @DeleteMapping(path = BEER_ENDPOINT_ID)
     Mono<ResponseEntity<Void>> deleteBeer(@PathVariable(name = "beerId") Integer id) {
-        return beerService.deleteById(id).then(Mono.fromCallable(() -> ResponseEntity.noContent().build()));
+        return beerService
+                .deleteById(id)
+                .thenReturn(ResponseEntity.noContent().build());
     }
 }
