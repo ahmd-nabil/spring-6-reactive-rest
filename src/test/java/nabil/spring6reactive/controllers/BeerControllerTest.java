@@ -3,8 +3,7 @@ package nabil.spring6reactive.controllers;
 import nabil.spring6reactive.domain.Beer;
 import nabil.spring6reactive.model.BeerDTO;
 import nabil.spring6reactive.repositories.BeerRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +17,7 @@ import java.math.BigDecimal;
  */
 @SpringBootTest
 @AutoConfigureWebTestClient
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BeerControllerTest {
     @Autowired
     WebTestClient webTestClient;
@@ -35,6 +35,7 @@ class BeerControllerTest {
                 .upc("123123")
                 .build();
     }
+    @Order(1)
     @Test
     public void testFindAll() {
         webTestClient
@@ -44,7 +45,7 @@ class BeerControllerTest {
                 .expectStatus().isOk()
                 .expectBody().jsonPath("$.size()").isEqualTo(3);
     }
-
+    @Order(1)
     @Test
     public void testFindById() {
         webTestClient
@@ -54,7 +55,7 @@ class BeerControllerTest {
                 .expectStatus().isOk()
                 .expectBody().jsonPath("$.beerName").isEqualTo("Galaxy Cat");
     }
-
+    @Order(99)
     @Test
     public void testSave() {
         webTestClient
@@ -66,6 +67,7 @@ class BeerControllerTest {
                 .expectHeader().exists("Location");
     }
 
+    @Order(99)
     @Test
     public void testUpdate() {
         webTestClient
@@ -75,7 +77,7 @@ class BeerControllerTest {
                 .exchange()
                 .expectStatus().isNoContent();
     }
-
+    @Order(999)
     @Test
     public void testDelete() {
         webTestClient
