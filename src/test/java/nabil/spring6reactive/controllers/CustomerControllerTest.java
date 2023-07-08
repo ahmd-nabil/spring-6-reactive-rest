@@ -46,6 +46,15 @@ class CustomerControllerTest {
                 .expectStatus().isOk()
                 .expectBody(CustomerDTO.class);
     }
+    @Test
+    @Order(1)
+    void testFindById_NotFound() {
+        webTestClient
+                .get()
+                .uri(CustomerController.CUSTOMER_ENDPOINT_ID, -1)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
 
     @Test
     @Order(99)
@@ -58,6 +67,17 @@ class CustomerControllerTest {
                 .expectStatus().isCreated()
                 .expectHeader().exists("Location");
     }
+    @Test
+    @Order(99)
+    void testSave_BadData() {
+        Customer badCustomer = Customer.builder().firstName("").build();
+            webTestClient
+                .post()
+                .uri(CustomerController.CUSTOMER_ENDPOINT)
+                .body(Mono.just(badCustomer), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
 
     @Test
     @Order(99)
@@ -69,7 +89,27 @@ class CustomerControllerTest {
                 .exchange()
                 .expectStatus().isNoContent();
     }
-
+    @Test
+    @Order(99)
+    void testUpdate_BadData() {
+        Customer badCustomer = Customer.builder().firstName("").build();
+        webTestClient
+                .put()
+                .uri(CustomerController.CUSTOMER_ENDPOINT_ID, 2)
+                .body(Mono.just(badCustomer), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+    @Test
+    @Order(99)
+    void testUpdate_NotFound() {
+        webTestClient
+                .put()
+                .uri(CustomerController.CUSTOMER_ENDPOINT_ID, -1)
+                .body(Mono.just(customer), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
     @Test
     @Order(99)
     void testPatch() {
@@ -80,7 +120,27 @@ class CustomerControllerTest {
                 .exchange()
                 .expectStatus().isNoContent();
     }
-
+    @Test
+    @Order(99)
+    void testPatch_BadData() {
+        Customer badCustomer = Customer.builder().lastName("").build();
+        webTestClient
+                .patch()
+                .uri(CustomerController.CUSTOMER_ENDPOINT_ID, 1)
+                .body(Mono.just(badCustomer), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+    @Test
+    @Order(99)
+    void testPatch_NotFound() {
+        webTestClient
+                .patch()
+                .uri(CustomerController.CUSTOMER_ENDPOINT_ID, -1)
+                .body(Mono.just(Customer.builder().firstName("AAA").build()), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
     @Test
     @Order(999)
     void testDeleteById() {
