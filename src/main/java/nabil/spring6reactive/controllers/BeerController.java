@@ -52,7 +52,7 @@ public class BeerController {
     @PatchMapping(path = BEER_ENDPOINT_ID)
     Mono<ResponseEntity<Void>> patchBeer(@PathVariable(name = "beerId") Integer id,
                                          @Validated @RequestBody BeerDTO beerDTO) {
-        return beerService.patchBeer(id, beerDTO).map(patchedDTO -> ResponseEntity.noContent().build());
+        return beerService.patch(id, beerDTO).map(patchedDTO -> ResponseEntity.noContent().build());
     }
 
     @DeleteMapping(path = BEER_ENDPOINT_ID)

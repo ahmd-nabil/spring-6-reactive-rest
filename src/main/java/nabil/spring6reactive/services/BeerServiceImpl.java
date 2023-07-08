@@ -53,7 +53,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public Mono<BeerDTO> patchBeer(Integer id, BeerDTO beerDTO) {
+    public Mono<BeerDTO> patch(Integer id, BeerDTO beerDTO) {
         return beerRepository.findById(id)
                 .map(foundBeer -> {
                     if(StringUtils.hasText(beerDTO.getBeerName())) {
