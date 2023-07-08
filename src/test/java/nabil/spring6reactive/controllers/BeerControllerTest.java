@@ -55,6 +55,14 @@ class BeerControllerTest {
                 .expectStatus().isOk()
                 .expectBody().jsonPath("$.beerName").isEqualTo("Galaxy Cat");
     }
+    @Order(1)
+    @Test
+    public void testFindById_NotFound() {
+        webTestClient
+                .get().uri(BeerController.BEER_ENDPOINT_ID, Integer.MAX_VALUE)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
     @Order(99)
     @Test
     public void testSave() {
@@ -67,6 +75,19 @@ class BeerControllerTest {
                 .expectHeader().exists("Location");
     }
 
+
+    @Order(100)
+    @Test
+    public void testSave_BadData() {
+        beer.setBeerName("");
+        webTestClient
+                .post()
+                .uri(BeerController.BEER_ENDPOINT)
+                .body(Mono.just(beer), BeerDTO.class)
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
     @Order(99)
     @Test
     public void testUpdate() {
@@ -76,6 +97,27 @@ class BeerControllerTest {
                 .body(Mono.just(beer), BeerDTO.class)
                 .exchange()
                 .expectStatus().isNoContent();
+    }
+    @Order(99)
+    @Test
+    public void testUpdate_NotFound() {
+        webTestClient
+                .put()
+                .uri(BeerController.BEER_ENDPOINT_ID, Integer.MAX_VALUE)
+                .body(Mono.just(beer), BeerDTO.class)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+    @Order(99)
+    @Test
+    public void testUpdate_BadData() {
+        beer.setPrice(BigDecimal.valueOf(-1));
+        webTestClient
+                .put()
+                .uri(BeerController.BEER_ENDPOINT_ID, 1)
+                .body(Mono.just(beer), BeerDTO.class)
+                .exchange()
+                .expectStatus().isBadRequest();
     }
     @Order(999)
     @Test
