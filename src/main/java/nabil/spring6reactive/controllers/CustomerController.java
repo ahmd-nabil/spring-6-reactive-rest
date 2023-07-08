@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nabil.spring6reactive.model.CustomerDTO;
 import nabil.spring6reactive.services.CustomerService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -33,7 +34,7 @@ public class CustomerController {
     }
 
     @PostMapping(CUSTOMER_ENDPOINT)
-    Mono<ResponseEntity<Void>> save(@RequestBody CustomerDTO customerDTO) {
+    Mono<ResponseEntity<Void>> save(@Validated @RequestBody CustomerDTO customerDTO) {
         return customerService
                 .save(customerDTO)
                 .map(savedDto ->
@@ -45,13 +46,13 @@ public class CustomerController {
 
     @PutMapping(CUSTOMER_ENDPOINT_ID)
     Mono<ResponseEntity<Void>> update(@PathVariable(name = "customerId") Integer id,
-                                      @RequestBody CustomerDTO customerDTO) {
+                                      @Validated @RequestBody CustomerDTO customerDTO) {
         return customerService.update(id, customerDTO).then(Mono.just(ResponseEntity.noContent().build()));
     }
 
     @PatchMapping(CUSTOMER_ENDPOINT_ID)
     Mono<ResponseEntity<Void>> patch(@PathVariable("customerId") Integer id,
-                                     @RequestBody CustomerDTO customerDTO) {
+                                     @Validated @RequestBody CustomerDTO customerDTO) {
         return customerService.patch(id, customerDTO).then(Mono.just(ResponseEntity.noContent().build()));
     }
 
